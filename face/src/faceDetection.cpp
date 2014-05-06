@@ -84,7 +84,7 @@ void detectAndDisplay( Mat frame, int argc, char** argv  )
 
 	//-- Detect faces
 	face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
-	if(counter%5 == 0)
+	if(counter%3 == 0)
 	{
 		//ROS initiated
 		ros::init(argc, argv, "detect_faces");
@@ -96,9 +96,35 @@ void detectAndDisplay( Mat frame, int argc, char** argv  )
 		msg.data = faces.size();	
 		face_pub.publish(msg);
 	}
-	
-	
-
+  if(counter == 0)
+  {
+    system("espeak \"Hi Matteo! This is our project.\"");
+  }
+  if(counter%20 == 0 && counter !=0)
+  {
+    if(faces.size()==0)
+    {
+      system("espeak \"No one is here. I'm lonely\"");
+    }
+    else if(faces.size()==1)
+    {
+      system("espeak \"1 person is here. How can I help?\"");
+    }
+    else if(faces.size()==2)
+    {
+      system("espeak \"2 people are here. Does anyone need anything\"");
+    }
+    else if (faces.size() ==3)
+    {
+      system("espeak \"3 people are here. Who needs help first\"");
+    }
+    else
+    {
+      system("espeak \"So many people! You must really like me\"");
+    }
+    
+  }
+  counter++;
 
 
 	for( size_t i = 0; i < faces.size(); i++ )
